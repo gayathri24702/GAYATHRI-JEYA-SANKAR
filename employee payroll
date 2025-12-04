@@ -1,0 +1,104 @@
+import java.awt.*;
+import java.awt.event.*;
+
+class PayrollAWT extends Frame implements ActionListener {
+
+    Label l1, l2, l3, l4, l5;
+    TextField t1, t2, t3, t4;
+    TextArea output;
+    Button calc, clear;
+
+    PayrollAWT() {
+
+        setLayout(new FlowLayout());
+
+        l1 = new Label("Employee ID:");
+        t1 = new TextField(20);
+
+        l2 = new Label("Employee Name:");
+        t2 = new TextField(20);
+
+        l3 = new Label("Designation:");
+        t3 = new TextField(20);
+
+        l4 = new Label("Basic Salary:");
+        t4 = new TextField(20);
+
+        calc = new Button("Calculate Salary");
+        clear = new Button("Clear");
+
+        l5 = new Label("Salary Output:");
+        output = new TextArea(10, 40);
+
+        add(l1); add(t1);
+        add(l2); add(t2);
+        add(l3); add(t3);
+        add(l4); add(t4);
+
+        add(calc);
+        add(clear);
+
+        add(l5);
+        add(output);
+
+        calc.addActionListener(this);
+        clear.addActionListener(this);
+
+        setTitle("Employee Payroll Management - AWT");
+        setSize(500, 500);
+        setVisible(true);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+
+        if (ae.getSource() == calc) {
+
+            try {
+                int id = Integer.parseInt(t1.getText());
+                String name = t2.getText();
+                String desg = t3.getText();
+                double basic = Double.parseDouble(t4.getText());
+
+                double hra = basic * 0.20;
+                double da = basic * 0.15;
+                double pf = basic * 0.12;
+
+                double gross = basic + hra + da;
+                double net = gross - pf;
+
+                output.setText("---- Salary Slip ----\n");
+                output.append("Employee ID : " + id + "\n");
+                output.append("Name        : " + name + "\n");
+                output.append("Designation : " + desg + "\n");
+                output.append("Basic Salary: " + basic + "\n\n");
+
+                output.append("HRA   : " + hra + "\n");
+                output.append("DA    : " + da + "\n");
+                output.append("PF    : " + pf + "\n");
+                output.append("Gross : " + gross + "\n");
+                output.append("Net   : " + net + "\n");
+
+            } catch (Exception e) {
+                output.setText("Invalid Input! Please enter correct values.");
+            }
+        }
+
+        if (ae.getSource() == clear) {
+            t1.setText("");
+            t2.setText("");
+            t3.setText("");
+            t4.setText("");
+            output.setText("");
+        }
+    }
+
+    public static void main(String[] args) {
+        new PayrollAWT();
+    }
+}
